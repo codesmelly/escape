@@ -125,15 +125,7 @@
 
     function appGetAds() {
         const bridge = vkBridge.default;
-        bridge.send("VKWebAppGetAds", {})
-        .then(data => {
-          console.log(data);
-          if (data.type == "VKWebAppCheckNativeAds")
-          {
-            myGameInstance.SendMessage('VkBridge', 'AdvertisementPreloadedResult', JSON.stringify(data));
-          }
-        })  
-        .catch(error => console.log(error));          
+        bridge.send('VKWebAppCheckNativeAds', { ad_format: 'interstitial'});
     }
     
     function getLaunchParams() {
@@ -174,7 +166,10 @@
         .then(data => {
           myGameInstance.SendMessage('VkBridge', 'ShowInterstitialResult', JSON.stringify(data));
         })  
-        .catch(error => console.log(error));
+        .catch(error => {
+            myGameInstance.SendMessage('VkBridge', 'ShowInterstitialError', JSON.stringify(error));
+            console.log(error);            
+        });
     }
 
     function showRewarded(id){
@@ -183,7 +178,10 @@
         .then(data => {
           myGameInstance.SendMessage('VkBridge', 'ShowRewardedResult', JSON.stringify(data));
         })  
-        .catch(error => console.log(error));
+        .catch(error => {
+            myGameInstance.SendMessage('VkBridge', 'ShowRewardedError', JSON.stringify(error));
+            console.log(error);            
+        });
     }      
 
     function sendPost(text){
